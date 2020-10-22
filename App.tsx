@@ -17,6 +17,7 @@ import {
   Text,
   Button,
   StatusBar,
+    TextInput,
 } from 'react-native';
 import SendSMS from 'react-native-sms-x';
 
@@ -29,7 +30,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 declare const global: {HermesInternal: null | {}};
-
+var TextInputValue = "";
+var TextInputNumber = "0471391751";
 const App = () => {
   return (
     <>
@@ -51,7 +53,22 @@ const App = () => {
                 use the button <Text style={styles.highlight}>Send SMS</Text> to send a text to a person
               </Text>
 
-              <Button title={"Send SMS"} onPress={sendSMSFunction}/>
+            <Text style={{paddingTop: 30}}>
+                Message:
+            </Text>
+            <TextInput
+                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                onChangeText={text => updateSmsValue(text)}/>
+
+            <Text style={{paddingTop: 30}}>
+                Phone number:
+            </Text>
+            <TextInput
+                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                onChangeText={text => updateSmsNumber(text)}
+            />
+                <Button title={"Send SMS"} onPress={sendSMSFunction}/>
+
             </View>
           </View>
         </ScrollView>
@@ -61,11 +78,26 @@ const App = () => {
   );
 };
 function sendSMSFunction() {
-    SendSMS.send(123, "0471391751", "Hey!", (msg)=>{
-        console.log("succes")
+    console.log(getSmsNumber());
+    SendSMS.send(123, getSmsNumber(), getSmsValue(), (msg)=>{
+        console.log(msg)
     });
 }
+function updateSmsNumber(value: string){
+    TextInputNumber = value;
+    console.log(TextInputNumber);
 
+}
+function updateSmsValue(value: string){
+    TextInputValue = value;
+    console.log(TextInputValue);
+}
+function getSmsValue(){
+    return TextInputValue
+}
+function getSmsNumber(){
+    return TextInputNumber
+}
 
 const styles = StyleSheet.create({
   scrollView: {
