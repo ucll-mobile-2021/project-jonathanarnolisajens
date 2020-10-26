@@ -1,0 +1,18 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\android",
+    "\\android\\app",
+    "\\android\\app\\src",
+    "\\android\\app\\src\\debug\\java",
+    "\\android\\app\\src\\debug\\java\\com",
+    "\\android\\app\\src\\debug\\java\\com\\smsapp",
+    "\\android\\app\\src\\main",
+    "\\android\\app\\src\\main\\java",
+    "\\android\\app\\src\\main\\java\\com",
+    "\\android\\app\\src\\main\\java\\com\\smsapp",
+    "\\android\\app\\src\\main\\res"
+  ],
+  "SelectedNode": "\\android\\app\\src\\main\\AndroidManifest.xml",
+  "PreviewInSolutionExplorer": false
+}

@@ -11,6 +11,7 @@
 import React from 'react';
 import {
   SafeAreaView,
+  PermissionsAndroid,
   StyleSheet,
   ScrollView,
   View,
@@ -75,8 +76,35 @@ const App = () => {
 
       </SafeAreaView>
     </>
+
   );
 };
+
+const requestSMSPermission  = async () =>{
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.SEND_SMS,
+      {
+        title: "Cool App SMS Permission",
+        message:
+          "Cool App needs access to SMS ",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can send SMS");
+    } else {
+      console.log("Camera permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+requestSMSPermission();
+
 function sendSMSFunction() {
     console.log(getSmsNumber());
     SendSMS.send(123, getSmsNumber(), getSmsValue(), (msg)=>{
