@@ -11,13 +11,13 @@
 import React from 'react';
 import {
   SafeAreaView,
+  PermissionsAndroid,
   StyleSheet,
   ScrollView,
   View,
   Text,
   Button,
   StatusBar,
-  PermissionsAndroid,
   TextInput,
 } from 'react-native';
 import SendSMS from 'react-native-sms-x';
@@ -76,35 +76,34 @@ const App = () => {
 
       </SafeAreaView>
     </>
+
   );
 };
 
-
-const checkPerm = async () => {
+const requestSMSPermission  = async () =>{
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.SEND_SMS,
       {
-        title: "SMS Permission",
-        message: "Allow this app to send texts",
+        title: "Cool App SMS Permission",
+        message:
+          "Cool App needs access to SMS ",
         buttonNeutral: "Ask Me Later",
         buttonNegative: "Cancel",
         buttonPositive: "OK"
       }
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the SMS");
+      console.log("You can send SMS");
     } else {
-      console.log("SMS permission denied");
+      console.log("Camera permission denied");
     }
   } catch (err) {
     console.warn(err);
   }
 };
 
-
-checkPerm()
-
+requestSMSPermission();
 
 function sendSMSFunction() {
     console.log(getSmsNumber());
