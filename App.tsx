@@ -17,7 +17,8 @@ import {
   Text,
   Button,
   StatusBar,
-    TextInput,
+  PermissionsAndroid,
+  TextInput,
 } from 'react-native';
 import SendSMS from 'react-native-sms-x';
 
@@ -31,7 +32,7 @@ import {
 
 declare const global: {HermesInternal: null | {}};
 var TextInputValue = "";
-var TextInputNumber = "0471391751";
+var TextInputNumber = "";
 const App = () => {
   return (
     <>
@@ -77,17 +78,46 @@ const App = () => {
     </>
   );
 };
+
+
+const checkPerm = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.SEND_SMS,
+      {
+        title: "SMS Permission",
+        message: "Allow this app to send texts",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the SMS");
+    } else {
+      console.log("SMS permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+
+checkPerm()
+
+
 function sendSMSFunction() {
     console.log(getSmsNumber());
     SendSMS.send(123, getSmsNumber(), getSmsValue(), (msg)=>{
         console.log(msg)
     });
 }
+
 function updateSmsNumber(value: string){
     TextInputNumber = value;
     console.log(TextInputNumber);
-
 }
+
 function updateSmsValue(value: string){
     TextInputValue = value;
     console.log(TextInputValue);
