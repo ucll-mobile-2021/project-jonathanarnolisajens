@@ -5,6 +5,8 @@ import { Text, View, Button, TextInput, StatusBar, SafeAreaView, ScrollView, Ima
 import { RouteDrawerParamList, RouteParamList } from './RouteParamList';
 import {styles} from '../style'
 import { TouchableOpacity} from 'react-native'
+import {DifTimer} from "./timer/Timer" 
+
 
 interface RoutesProps{}
 
@@ -25,9 +27,9 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
             <Drawer.Navigator initialRouteName="Home">
                 <Drawer.Screen name="Home" component={Home} />
                 <Drawer.Screen name="GPS" component={DistanceTracking} /> 
+                <Drawer.Screen name="TimedSms" component={TimedSms} /> 
             </Drawer.Navigator>
         </NavigationContainer>
-        
     )
 }
 
@@ -85,6 +87,79 @@ function Home({navigation,route}: RouteDrawerParamList<"Home">){
       </SafeAreaView>
     </>
     )
+}
+
+/** Timed SMS */
+import DateTimePicker from '@react-native-community/datetimepicker'; //https://github.com/react-native-datetimepicker/datetimepicker
+
+function TimedSms({navigation,route}: RouteDrawerParamList<"TimedSms">){
+  var currDate = new Date();
+
+  const [date, setDate] = React.useState(new Date());
+  const [mode, setMode] = React.useState('date');
+  const [show, setShow] = React.useState(false);
+  const showMode = (currentMode : string) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+  const changeDateTime = (event : Event, selectedDate : Date) => {
+    //toon de overlay om uw date/time te veranderen, belangrijk dat dit eerst gebeurt, anders blijft het de time opnieuw tonen na het invullen.
+    setShow(false);
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+    console.log(selectedDate);
+    console.log(currentDate);
+    currDate = currentDate;
+  };
+
+  function saveTimedSMSFunction(){
+    // run Timer functie met sendsms als callback functie
+    // +- DifTimer.set_timer_for_n_seconds(calculate_diff(selectedDate), Sms.sendSMSFunction())
+    console.log("saveSms")
+  }
+
+  return(
+    <View>
+      <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+      <View style={styles.sectionContainer}>
+      <Text style={styles.sectionTitle}>
+            Timed SMS
+        </Text>
+        <Text style={styles.sectionDescription}>
+            Set the <Text style={styles.highlight}>DATE</Text> and <Text style={styles.highlight}>TIME</Text> you want to send the text. Then you can <Text style={styles.highlight}>SAVE</Text> the text        </Text>
+        <View>
+          <Button onPress={showDatepicker} title="Set date" />
+          <Button onPress={showTimepicker} title="Set time" />
+        </View>
+        <Text>
+        
+            {'Selected: '+ date.toLocaleString("nl-BE") /*veranderd de manier dat de date word weergegeven naar die zoals we dat in belgie doen */}
+          </Text>
+          <Text>
+            {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    date={currDate}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={changeDateTime}
+                  />
+                )}
+            </Text>
+            <Button title={"Save SMS"} onPress={saveTimedSMSFunction}/>
+        </View>
+    </View>
+
+  )
 }
 
 /** GPS screen */

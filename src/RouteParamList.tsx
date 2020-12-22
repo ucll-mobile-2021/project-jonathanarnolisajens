@@ -7,6 +7,8 @@ import { RouteProp } from "@react-navigation/native";
 export type RouteParamList = {
     Home: undefined,
     GPS: undefined,
+    TimedSms: undefined,
+
 };
 
 export type RouteDrawerParamList<T extends keyof RouteParamList> = {
