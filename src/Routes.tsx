@@ -3,7 +3,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Button, TextInput, StatusBar, SafeAreaView, ScrollView, Image, StyleSheet } from 'react-native';
 import { RouteDrawerParamList, RouteParamList } from './RouteParamList';
-import {styles} from '../style'
+import {styles} from './style/style'
+import {ownStyle} from './style/style'
 import { TouchableOpacity} from 'react-native'
 import {DifTimer} from "./timer/Timer" 
 
@@ -191,16 +192,3 @@ function DistanceTracking({navigation,route}: RouteDrawerParamList<"DistanceTrac
 
 
 
-const ownStyle = StyleSheet.create({
-  buttonNav: {
-    margin: 10,
-    width: 20,
-    height: 20,
-    color: '#40E0D0',
-    backgroundColor: '#CCCCFF',
-  },
-  photo: {
-    width: 20,
-    height: 20,
-  }
-});

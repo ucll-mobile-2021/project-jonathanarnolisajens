@@ -73,3 +73,17 @@ export const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   }
 })
+
+export const ownStyle = StyleSheet.create({
+  buttonNav: {
+    margin: 10,
+    width: 20,
+    height: 20,
+    color: '#40E0D0',
+    backgroundColor: '#CCCCFF',
+  },
+  photo: {
+    width: 20,
+    height: 20,
+  }
+});
