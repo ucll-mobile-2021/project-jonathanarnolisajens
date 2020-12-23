@@ -8,7 +8,8 @@ export type RouteParamList = {
     Home: undefined,
     GPS: undefined,
     TimedSms: undefined,
-
+    SMSRule: undefined,
+    ShowSmsRule: undefined,
 };
 
 export type RouteDrawerParamList<T extends keyof RouteParamList> = {

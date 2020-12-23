@@ -14,6 +14,8 @@ import java.util.List;
 import com.someone.sendsms.SendSMSPackage;
 
 public class MainApplication extends Application implements ReactApplication {
+
+
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
@@ -50,6 +52,8 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
+  
+
 
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like

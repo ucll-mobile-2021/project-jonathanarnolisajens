@@ -8,7 +8,6 @@ export module DifTimer {
         var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); 
         return ( Difference_In_Days * 86400 ) - Seconds_In_Minute
       }
-      
 
       /*
         Na n seconden, voer de functie callback uit. Zelfs wanneer de app in de achtergrond staat.
