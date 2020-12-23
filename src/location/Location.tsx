@@ -17,7 +17,8 @@ export default class Location{
     pdis;
     preciseDistance;
     TextTargetValue;
-    constructor(){
+    inputDistance: number;
+    constructor(inpD: number = 1000){
         this.GpsLat = 0;
         this.GpsLon = 0;
         this.CurrentLat = this.getLat();
@@ -26,6 +27,7 @@ export default class Location{
         this.preciseDistance = 0;
         this.TextTargetValue = "";
         this.getLocation();
+        this.inputDistance = inpD;
     }
 
 
@@ -99,6 +101,10 @@ calculatePreciseDistance = () => {
     this.CurrentLat = parseFloat(coord);
   }
 
+  setDestination(destination: string){
+    this.TextTargetValue = destination;
+  }
+
   getLocation(){
     Geolocation.getCurrentPosition((position) => {
       this.CurrentLat = position.coords.latitude;
@@ -110,7 +116,7 @@ calculatePreciseDistance = () => {
   startTracking(){
     console.log("Current distance: " + Loopdis)
     var interval = setInterval(() => {
-      if(Loopdis > 1000){
+      if(Loopdis > this.inputDistance){
         console.log("Distance left: " + Loopdis)
         this.getLocation();
         console.log("New location: " + this.CurrentLat + " & " + this.CurrentLon)
@@ -127,3 +133,5 @@ calculatePreciseDistance = () => {
     }, 30000);
   }
 }
+
+/** UPDATE DID SOME SHIT HOPE I DIDN'T BREAK ANYTHING, Jonathan */
