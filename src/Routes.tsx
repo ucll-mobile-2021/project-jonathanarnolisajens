@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
+
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Button, TextInput, StatusBar, SafeAreaView, ScrollView, Image, StyleSheet } from 'react-native';
@@ -128,7 +129,14 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
 
 /**Show all template SMS */
 function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">) {
-  showrules()
+
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  function handleClick() {
+    forceUpdate();
+  }
+
+  
 
   function showrules(){
     let smsrules = smsRuleModule.getAllSmsRules().map(val => 
@@ -143,7 +151,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
       <Text>
         View all your template SMS:
       </Text>
-
+      <Button title={"Reload page"} onPress={handleClick}/>
       {showrules()}
        
 

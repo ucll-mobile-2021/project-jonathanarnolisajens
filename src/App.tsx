@@ -23,6 +23,8 @@ const App = () => {
   );
 };
 
+
+
 const requestSMSPermission  = async () =>{
   try {
     const granted = await PermissionsAndroid.request(
