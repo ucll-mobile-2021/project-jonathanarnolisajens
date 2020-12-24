@@ -180,8 +180,6 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
     setShow(false);
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    console.log(selectedDate);
-    console.log(currentDate);
     currDate = currentDate;
   };
 
@@ -233,7 +231,7 @@ import Location from './location/Location'
 import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
 var Loc: Location = new Location();
-function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
+function DistanceTracking({ navigation, route }: RouteDrawerParamList<"DistanceTracking">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
   const [DistanceToTarget, setDistanceToTarget] = useState(" ");
   return (
