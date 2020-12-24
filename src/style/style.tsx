@@ -83,7 +83,7 @@ export const ownStyle = StyleSheet.create({
     backgroundColor: '#CCCCFF',
   },
   photo: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
   }
 });
