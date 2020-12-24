@@ -227,27 +227,25 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
 }
 
 /** GPS screen */
-import Location from './location/Location'
+import LocationRule from './rule/LocationRule'
 import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
-var Loc: Location = new Location();
-function DistanceTracking({ navigation, route }: RouteDrawerParamList<"DistanceTracking">) {
+var LR: LocationRule = new LocationRule();
+function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
   const [DistanceToTarget, setDistanceToTarget] = useState(" ");
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Navigation rule</Text>
+        <Text style={styles.sectionTitle}>Location rule</Text>
         <Text style={styles.sectionDescription}>
-          use the button <Text style={styles.highlight}>SELECT TARGET</Text> to set your destination and use
-                <Text style={styles.highlight}> DISTANCE</Text> to start calculating the distance left
+          Fill in the destination field and press the  <Text style={styles.highlight}>Set  Destination</Text> button to set your destination and start calculating the distance left
               </Text>
         <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => Loc.updateTargetLocation(text)} />
-        <Button title="Select target" onPress={Loc.getTargetLocationFromAPI}></Button>
-        <Button title="Distance" onPress={() => setDistanceToTarget(Loc.getDistanceBetween())}></Button>
+          onChangeText={text => LR.setDestination(text)} />
+        <Button title="Set Destination" onPress={LR.createRule}></Button>
         <Text style={{ paddingTop: 30 }}>{DistanceToTarget}</Text>
       </View>
     </View>
