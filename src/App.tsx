@@ -15,6 +15,7 @@ import {PermissionsAndroid,} from 'react-native';
 
 
 const App = () => {
+  
   return (
     <>
       <Routes />

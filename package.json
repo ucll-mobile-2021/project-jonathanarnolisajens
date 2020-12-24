@@ -21,9 +21,11 @@
     "react-native-geocoding": "^0.4.0",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-modal-datetime-picker": "^9.1.0",
+    "react-native-modal-dropdown": "^0.7.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
+    "react-native-searchable-dropdown": "^1.1.1",
     "react-native-sms-x": "^1.0.7"
   },
   "devDependencies": {
@@ -32,6 +34,7 @@
     "@react-native-community/eslint-config": "^1.1.0",
     "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
+    "@types/react-native-modal-dropdown": "^0.7.0",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",

@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from 'react';
-
+import React, { useReducer, useState, Fragment } from 'react';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native';
 import { Text, View, Button, TextInput, StatusBar, SafeAreaView, ScrollView, Image, StyleSheet } from 'react-native';
@@ -45,8 +45,10 @@ declare const global: { HermesInternal: null | {} };
 import Sms from './sms/Sms'
 
 var SMS: Sms = new Sms();
-
 function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
+
+  var items = smsRuleModule.getAllSmsRules()  
+  
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -55,6 +57,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
         <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
 
         <ScrollView
+          keyboardShouldPersistTaps='handled'
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           {global.HermesInternal == null ? null : (
@@ -68,13 +71,67 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
               <Text style={styles.sectionDescription}>
                 use the button <Text style={styles.highlight}>Send SMS</Text> to send a text to a person
               </Text>
+              <View>
+              <Fragment>
+                {/**De dropdown met een hoop informatie.
+                 * 
+                 * Belangrijkste elementen:
+                 *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
+                 *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
+                 * 
+                 * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
+                 */}
+                <SearchableDropdown
+                  onItemSelect={(item : SmsRule) => {
+                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                    console.log(item)
+                  }}
+                  items={items}
+                  containerStyle={{ padding: 5 }}
+                  itemTextStyle={{ color: '#222' }}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  resetValue={false}
+                  chip={true}
 
-              <Text style={{ paddingTop: 30 }}>
+                  textInputProps={
+                    {
+                      placeholder: "placeholder",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                          padding: 12,
+                          borderWidth: 1,
+                          borderColor: '#ccc',
+                          borderRadius: 5,
+                      },
+                      
+                    }
+                  }      
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+      
+               />
+
+              </Fragment>
+              </View>
+
+              {/**Dit is de oude message input field: */}
+              {/* <Text style={{ paddingTop: 30 }}>
                 Message:
             </Text>
               <TextInput
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                onChangeText={text => SMS.updateSmsValue(text)} />
+                onChangeText={text => SMS.updateSmsValue(text)} /> */}
 
               <Text style={{ paddingTop: 30 }}>
                 Phone number:
@@ -135,6 +192,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
   function handleClick() {
     forceUpdate();
   }
+
 
   function showrules(){
     let smsrules = smsRuleModule.getAllSmsRules().map(val => 
@@ -230,6 +288,7 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
 import LocationRule from './rule/LocationRule'
 import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
+import { createNativeWrapper } from 'react-native-gesture-handler';
 var LR: LocationRule = new LocationRule();
 function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
