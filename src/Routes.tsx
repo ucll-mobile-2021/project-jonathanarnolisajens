@@ -136,15 +136,12 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
     forceUpdate();
   }
 
-  
-
   function showrules(){
     let smsrules = smsRuleModule.getAllSmsRules().map(val => 
     <Text key={val.title} >   {val.title}: {val.value}</Text>)
     return smsrules
   }
   
-
   return(
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -153,8 +150,6 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
       </Text>
       <Button title={"Reload page"} onPress={handleClick}/>
       {showrules()}
-       
-
     </View>
   )
 }

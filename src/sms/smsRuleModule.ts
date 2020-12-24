@@ -27,4 +27,5 @@ export module smsRuleModule {
     export function getAllSmsRules(){
         return arrSms
     }
+    
 }
