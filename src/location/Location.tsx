@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import {getDistance, getPreciseDistance} from 'geolib';
+import { Text } from 'react-native';
 
 var TargetLat = 0;
 var TargetLon = 0;
 var Loopdis = 0;
-
-var id = 0;
 
 export default class Location{ 
 
@@ -52,9 +51,10 @@ calculatePreciseDistance = () => {
     return this.preciseDistance + "KM"
   }
 
-  getTargetLocationFromAPI = () => {
+  getTargetLocationFromAPI = (TextTargetValue: string) => {
     //console.log(TextTargetValue.split(' ').join('%20'))
-    return fetch('https://nominatim.openstreetmap.org/search.php?q=' + this.TextTargetValue.split(' ').join('%20') + '&format=json')
+    console.log("YEEEEET" +  TextTargetValue)
+    return fetch('https://nominatim.openstreetmap.org/search.php?q=' + TextTargetValue.split(' ').join('%20') + '&format=json')
       .then((response) => response.text())
       .then((json) => {
         var jsonlat = json.split("lat\"")
@@ -99,10 +99,6 @@ calculatePreciseDistance = () => {
 
   setLat(coord: string){
     this.CurrentLat = parseFloat(coord);
-  }
-
-  setDestination(destination: string){
-    this.TextTargetValue = destination;
   }
 
   getLocation(){
