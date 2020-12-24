@@ -13,11 +13,15 @@ export default class SmsRule {
     }
 
     setTitle(title :string){
-        this.title = title;
+        if(title != "" && title != null){
+            this.title = title;
+        }
     }
     
     setValue(value :string){
-        this.value = value;
+        if(value != "" && value != null){
+            this.value = value;
+        }
     }
 
     getTitle(){
