@@ -15,6 +15,7 @@ export default class LocationRule{
         this.message = "Default constructor message";
         this.inpD = 1000;
         this.destination = "";
+        Loc = new Location();
     }
 
     setContact(contact: string){
@@ -27,6 +28,7 @@ export default class LocationRule{
 
     setDestination(destination: string){
         this.destination = destination;
+        Loc.updateTargetLocation(destination)
         console.log(this.destination)
     }
 
@@ -35,8 +37,7 @@ export default class LocationRule{
     }
 
     createRule(){
-        Loc = new Location();
-        Loc.getTargetLocationFromAPI("Heverlee");
+        Loc.getTargetLocationFromAPI();
         Loc.getDistanceBetween();
     }
 
