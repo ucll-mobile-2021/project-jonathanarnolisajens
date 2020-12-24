@@ -51,10 +51,10 @@ calculatePreciseDistance = () => {
     return this.preciseDistance + "KM"
   }
 
-  getTargetLocationFromAPI = (TextTargetValue: string) => {
+  getTargetLocationFromAPI = () => {
     //console.log(TextTargetValue.split(' ').join('%20'))
-    console.log("YEEEEET" +  TextTargetValue)
-    return fetch('https://nominatim.openstreetmap.org/search.php?q=' + TextTargetValue.split(' ').join('%20') + '&format=json')
+    console.log("YEEEEET" +  this.TextTargetValue)
+    return fetch('https://nominatim.openstreetmap.org/search.php?q=' + this.TextTargetValue.split(' ').join('%20') + '&format=json')
       .then((response) => response.text())
       .then((json) => {
         var jsonlat = json.split("lat\"")
