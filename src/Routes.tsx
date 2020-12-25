@@ -102,7 +102,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 import PhoneContacts from './contacts/contacts'
 function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   const [resultItem, setResult] = React.useState("");
-  const [resultCotact, setContact] = React.useState("");
+  const [resultContact, setContact] = React.useState("");
 
   const showResult = (value: string) => {
     setResult(value)
@@ -111,6 +111,9 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   var items = smsRuleModule.getAllSmsRules()
   var contacts: PhoneContacts = new PhoneContacts();
   var cl = contacts.getAllContacts();
+  
+  console.log(cl)
+
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -167,6 +170,7 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
         />
         <Text>{resultItem}</Text>
 
+
       </Fragment>
       </View>
       <View>
@@ -179,11 +183,9 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
             /**Logt de Sms rule die geselecteerd is uit de dropdown */
             /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
             console.log(item)
-            setContact(item.getNumber);
+            setContact(item.getNumber());
           }}
-          items={cl.forEach(c => {
-            c.getName();
-          })}
+          items={cl}
           containerStyle={{ padding: 5 }}
           itemTextStyle={{ color: '#222' }}
           itemStyle={{
@@ -217,7 +219,7 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
           }
 
         />
-        <Text>{resultCotact}</Text>
+        <Text>{resultContact}</Text>
           
       </Fragment>
       </View>

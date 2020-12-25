@@ -10,7 +10,6 @@ export default class PhoneContacts{
 constructor(){
     this.personen = new Array<ContactInfo>(); 
     this.returnContacts(); 
-    
 }
 
 async returnContacts(){
@@ -22,9 +21,12 @@ async returnContacts(){
            info.setName(x); 
            info.setNumber(y); 
            this.personen.push(info);
+           info = new ContactInfo()
         });
-
+        return this.personen
+        
     });
+   
 
     return this.personen; 
     
