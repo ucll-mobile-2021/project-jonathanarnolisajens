@@ -32,6 +32,7 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
         <Drawer.Screen name="ShowSmsRule" component={ShowSmsRule} />
         <Drawer.Screen name="GPS" component={DistanceTracking} />
         <Drawer.Screen name="TimedSms" component={TimedSms} />
+        <Drawer.Screen name="YEET" component={YEET} />
       </Drawer.Navigator>
     </NavigationContainer>
   )
@@ -71,7 +72,38 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
               <Text style={styles.sectionDescription}>
                 use the button <Text style={styles.highlight}>Send SMS</Text> to send a text to a person
               </Text>
-              <View>
+              
+            
+              <Text style={{ paddingTop: 30 }}>
+                Message:
+            </Text>
+              <TextInput
+                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                onChangeText={text => SMS.updateSmsValue(text)} />
+
+              <Text style={{ paddingTop: 30 }}>
+                Phone number:
+            </Text>
+              <TextInput
+                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                onChangeText={text => SMS.updateSmsNumber(text)}
+              />
+              <Button title={"Send SMS"} onPress={SMS.sendSMSFunction} />
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  )
+}
+
+function YEET({navigation, route}: RouteDrawerParamList<"YEET">){
+
+  var items = smsRuleModule.getAllSmsRules()
+  var resultItem = "";
+  return(
+    <View>
+       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
               <Fragment>
                 {/**De dropdown met een hoop informatie.
                  * 
@@ -86,6 +118,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
                     /**Logt de Sms rule die geselecteerd is uit de dropdown */
                     /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
                     console.log(item)
+                    resultItem = item.getValue();
                   }}
                   items={items}
                   containerStyle={{ padding: 5 }}
@@ -103,7 +136,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 
                   textInputProps={
                     {
-                      placeholder: "placeholder",
+                      placeholder: "Select message",
                       underlineColorAndroid: "transparent",
                       style: {
                           padding: 12,
@@ -121,31 +154,9 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
                   }
       
                />
-
+               <Text>{resultItem}</Text>
               </Fragment>
               </View>
-
-              {/**Dit is de oude message input field: */}
-              {/* <Text style={{ paddingTop: 30 }}>
-                Message:
-            </Text>
-              <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                onChangeText={text => SMS.updateSmsValue(text)} /> */}
-
-              <Text style={{ paddingTop: 30 }}>
-                Phone number:
-            </Text>
-              <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                onChangeText={text => SMS.updateSmsNumber(text)}
-              />
-              <Button title={"Send SMS"} onPress={SMS.sendSMSFunction} />
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
   )
 }
 
@@ -196,7 +207,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
 
   function showrules(){
     let smsrules = smsRuleModule.getAllSmsRules().map(val => 
-    <Text key={val.title} >   {val.title}: {val.value}</Text>)
+    <Text key={val.title} >   {val.title}: {val.name}</Text>)
     return smsrules
   }
   
@@ -293,6 +304,16 @@ var LR: LocationRule = new LocationRule();
 function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
   const [DistanceToTarget, setDistanceToTarget] = useState(" ");
+
+  function DistanceTrack(){
+    LR.createRule();
+    setTimeout(() => {
+      setDistanceToTarget(LR.getDistanceBetween());
+    }, 5000);
+    setInterval(() => {
+      setDistanceToTarget(LR.getDistanceBetween());
+    }, 30000);
+  }
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -304,7 +325,8 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
         <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
           onChangeText={text => LR.setDestination(text)} />
-        <Button title="Set Destination" onPress={LR.createRule}></Button>
+        <Button title="Set Destination" onPress={DistanceTrack}></Button>
+        <Button title="IGNORE" onPress={() => setDistanceToTarget(LR.getDistanceBetween())}></Button>
         <Text style={{ paddingTop: 30 }}>{DistanceToTarget}</Text>
       </View>
     </View>

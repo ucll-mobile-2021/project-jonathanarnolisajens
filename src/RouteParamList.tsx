@@ -10,6 +10,7 @@ export type RouteParamList = {
     TimedSms: undefined,
     SMSRule: undefined,
     ShowSmsRule: undefined,
+    YEET: undefined,
 };
 
 export type RouteDrawerParamList<T extends keyof RouteParamList> = {

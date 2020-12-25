@@ -36,6 +36,10 @@ export default class LocationRule{
         return this.destination.toString();
     }
 
+    getDistanceBetween(){
+        return Loc.getDistanceBetween();
+    }
+
     createRule(){
         Loc.getTargetLocationFromAPI();
         Loc.getDistanceBetween();
