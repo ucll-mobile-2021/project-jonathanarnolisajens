@@ -98,9 +98,13 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 }
 
 function YEET({navigation, route}: RouteDrawerParamList<"YEET">){
+  const [resultItem, setResult] = React.useState("");
+
+  const showResult = (value: string)=>{
+    setResult(value)
+  }
 
   var items = smsRuleModule.getAllSmsRules()
-  var resultItem = "";
   return(
     <View>
        <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -118,7 +122,7 @@ function YEET({navigation, route}: RouteDrawerParamList<"YEET">){
                     /**Logt de Sms rule die geselecteerd is uit de dropdown */
                     /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
                     console.log(item)
-                    resultItem = item.getValue();
+                    setResult(item.getValue());
                   }}
                   items={items}
                   containerStyle={{ padding: 5 }}
@@ -207,7 +211,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
 
   function showrules(){
     let smsrules = smsRuleModule.getAllSmsRules().map(val => 
-    <Text key={val.title} >   {val.title}: {val.name}</Text>)
+    <Text key={val.name} >   {val.name}: {val.value}</Text>)
     return smsrules
   }
   

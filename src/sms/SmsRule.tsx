@@ -5,31 +5,30 @@ import Sms from "./Sms"
 // var smsvalue = "";
 
 export default class SmsRule {
-    title :string;
-    //Name is actually value in this case. But this name was necessary for the dropdown.
     name :string;
+    value :string;
     
     constructor(title :string, value :string){
-        this.title = title;
-        this.name = value;
+        this.name = title;
+        this.value = value;
     }
 
     setTitle(title :string){
         if(title != "" && title != null){
-            this.title = title;
+            this.name = title;
         }
     }
     
     setValue(value :string){
         if(value != "" && value != null){
-            this.name = value;
+            this.value = value;
         }
     }
 
     getTitle(){
-        return this.title;
+        return this.name;
     }
     getValue(){
-        return this.name;
+        return this.value;
     }
 }

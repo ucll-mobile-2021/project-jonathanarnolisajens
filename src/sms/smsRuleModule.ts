@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 export module smsRuleModule {
     
-    let rule = new SmsRule("title", "message")
-    let rule2 = new SmsRule("extra", "new message")
+    let rule = new SmsRule("Informal greeting", "Hey!")
+    let rule2 = new SmsRule("Morning greeting", "Good morning")
 
     let arrSms : Array<SmsRule> = [rule, rule2];
     var title : string;
