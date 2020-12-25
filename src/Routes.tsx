@@ -102,17 +102,19 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 import PhoneContacts from './contacts/contacts'
 function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   const [resultItem, setResult] = React.useState("");
+  const [resultCotact, setContact] = React.useState("");
 
   const showResult = (value: string) => {
     setResult(value)
   }
 
-  contacts: [];
   var items = smsRuleModule.getAllSmsRules()
-  var contacts: PhoneContacts = new PhoneContacts(); 
+  var contacts: PhoneContacts = new PhoneContacts();
+  var cl = contacts.getAllContacts();
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+      <View>
       <Fragment>
         {/**De dropdown met een hoop informatie.
                  * 
@@ -166,6 +168,8 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
         <Text>{resultItem}</Text>
 
       </Fragment>
+      </View>
+      <View>
 
 
 
@@ -175,9 +179,11 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
             /**Logt de Sms rule die geselecteerd is uit de dropdown */
             /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
             console.log(item)
-            setResult(item.getNumber);
+            setContact(item.getNumber);
           }}
-          items={contacts.getAllContacts}
+          items={cl.forEach(c => {
+            c.getName();
+          })}
           containerStyle={{ padding: 5 }}
           itemTextStyle={{ color: '#222' }}
           itemStyle={{
@@ -193,7 +199,7 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 
           textInputProps={
             {
-              placeholder: "Select message",
+              placeholder: "Select contact",
               underlineColorAndroid: "transparent",
               style: {
                 padding: 12,
@@ -211,10 +217,10 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
           }
 
         />
-        <Text>{resultItem}</Text>
+        <Text>{resultCotact}</Text>
           
       </Fragment>
-
+      </View>
 
     </View>
 

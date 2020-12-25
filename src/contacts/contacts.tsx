@@ -4,11 +4,11 @@ import ContactInfo from './../contacts/ContactInfo';
 var info = new ContactInfo(); 
 
 export default class PhoneContacts{
-    personen: Set<ContactInfo>   
+    personen: Array<ContactInfo>   
 
 
 constructor(){
-    this.personen = new Set<ContactInfo>(); 
+    this.personen = new Array<ContactInfo>(); 
     this.returnContacts(); 
     
 }
@@ -21,8 +21,7 @@ async returnContacts(){
            var y = number.number; 
            info.setName(x); 
            info.setNumber(y); 
-           this.personen.add(info); 
-           console.log(this.personen)
+           this.personen.push(info);
         });
 
     });
