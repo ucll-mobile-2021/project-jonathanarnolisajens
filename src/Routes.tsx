@@ -8,8 +8,8 @@ import { styles } from './style/style'
 import { ownStyle } from './style/style'
 import { TouchableOpacity } from 'react-native'
 import { DifTimer } from "./timer/Timer"
-import {smsRuleModule} from "./sms/smsRuleModule"
-
+import { smsRuleModule } from "./sms/smsRuleModule"
+import {FlatList} from "react-native"
 interface RoutesProps { }
 
 export const Routes: React.FC<RoutesProps> = ({ }) => {
@@ -45,11 +45,12 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
 declare const global: { HermesInternal: null | {} };
 import Sms from './sms/Sms'
 
+
 var SMS: Sms = new Sms();
 function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 
-  var items = smsRuleModule.getAllSmsRules()  
-  
+  var items = smsRuleModule.getAllSmsRules()
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -72,8 +73,8 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
               <Text style={styles.sectionDescription}>
                 use the button <Text style={styles.highlight}>Send SMS</Text> to send a text to a person
               </Text>
-              
-            
+
+
               <Text style={{ paddingTop: 30 }}>
                 Message:
             </Text>
@@ -97,19 +98,23 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
   )
 }
 
-function YEET({navigation, route}: RouteDrawerParamList<"YEET">){
+
+import PhoneContacts from './contacts/contacts'
+function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   const [resultItem, setResult] = React.useState("");
 
-  const showResult = (value: string)=>{
+  const showResult = (value: string) => {
     setResult(value)
   }
 
+  contacts: [];
   var items = smsRuleModule.getAllSmsRules()
-  return(
+  var contacts: PhoneContacts = new PhoneContacts(); 
+  return (
     <View>
-       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
-              <Fragment>
-                {/**De dropdown met een hoop informatie.
+      <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+      <Fragment>
+        {/**De dropdown met een hoop informatie.
                  * 
                  * Belangrijkste elementen:
                  *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
@@ -117,50 +122,102 @@ function YEET({navigation, route}: RouteDrawerParamList<"YEET">){
                  * 
                  * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
                  */}
-                <SearchableDropdown
-                  onItemSelect={(item : SmsRule) => {
-                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
-                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
-                    console.log(item)
-                    setResult(item.getValue());
-                  }}
-                  items={items}
-                  containerStyle={{ padding: 5 }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: '#ddd',
-                    borderColor: '#bbb',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                  }}
-                  resetValue={false}
-                  chip={true}
+        <SearchableDropdown
+          onItemSelect={(item: SmsRule) => {
+            /**Logt de Sms rule die geselecteerd is uit de dropdown */
+            /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+            console.log(item)
+            setResult(item.getValue());
+          }}
+          items={items}
+          containerStyle={{ padding: 5 }}
+          itemTextStyle={{ color: '#222' }}
+          itemStyle={{
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: '#ddd',
+            borderColor: '#bbb',
+            borderWidth: 1,
+            borderRadius: 5,
+          }}
+          resetValue={false}
+          chip={true}
 
-                  textInputProps={
-                    {
-                      placeholder: "Select message",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                          padding: 12,
-                          borderWidth: 1,
-                          borderColor: '#ccc',
-                          borderRadius: 5,
-                      },
-                      
-                    }
-                  }      
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
-      
-               />
-               <Text>{resultItem}</Text>
-              </Fragment>
-              </View>
+          textInputProps={
+            {
+              placeholder: "Select message",
+              underlineColorAndroid: "transparent",
+              style: {
+                padding: 12,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 5,
+              },
+
+            }
+          }
+          listProps={
+            {
+              nestedScrollEnabled: true,
+            }
+          }
+
+        />
+        <Text>{resultItem}</Text>
+
+      </Fragment>
+
+
+
+      <Fragment>
+      <SearchableDropdown
+          onItemSelect={(item: ContactInfo) => {
+            /**Logt de Sms rule die geselecteerd is uit de dropdown */
+            /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+            console.log(item)
+            setResult(item.getNumber);
+          }}
+          items={contacts.getAllContacts}
+          containerStyle={{ padding: 5 }}
+          itemTextStyle={{ color: '#222' }}
+          itemStyle={{
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: '#ddd',
+            borderColor: '#bbb',
+            borderWidth: 1,
+            borderRadius: 5,
+          }}
+          resetValue={false}
+          chip={true}
+
+          textInputProps={
+            {
+              placeholder: "Select message",
+              underlineColorAndroid: "transparent",
+              style: {
+                padding: 12,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 5,
+              },
+
+            }
+          }
+          listProps={
+            {
+              nestedScrollEnabled: true,
+            }
+          }
+
+        />
+        <Text>{resultItem}</Text>
+          
+      </Fragment>
+
+
+    </View>
+
   )
 }
 
@@ -179,7 +236,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
         <Text style={styles.sectionDescription}>
           Make a Template SMS to couple to a rule
       </Text>
-      <Text style={{ paddingTop: 30 }}>
+        <Text style={{ paddingTop: 30 }}>
           Title:
       </Text>
         <TextInput
@@ -209,19 +266,19 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
   }
 
 
-  function showrules(){
-    let smsrules = smsRuleModule.getAllSmsRules().map(val => 
-    <Text key={val.name} >   {val.name}: {val.value}</Text>)
+  function showrules() {
+    let smsrules = smsRuleModule.getAllSmsRules().map(val =>
+      <Text key={val.name} >   {val.name}: {val.value}</Text>)
     return smsrules
   }
-  
-  return(
+
+  return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
       <Text>
         View all your template SMS:
       </Text>
-      <Button title={"Reload page"} onPress={handleClick}/>
+      <Button title={"Reload page"} onPress={handleClick} />
       {showrules()}
     </View>
   )
@@ -273,10 +330,10 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
           Set the <Text style={styles.highlight}>DATE</Text> and <Text style={styles.highlight}>TIME</Text> you want to send the text. Then you can <Text style={styles.highlight}>SAVE</Text> the text        </Text>
         <View style={styles.container}>
           <View style={styles.buttonContainer}>
-            <Button onPress={showDatepicker} title="Set date"/>
+            <Button onPress={showDatepicker} title="Set date" />
           </View>
           <View style={styles.buttonContainer}>
-            <Button onPress={showTimepicker} title="Set time"/>
+            <Button onPress={showTimepicker} title="Set time" />
           </View>
         </View>
         <Text>
@@ -308,12 +365,13 @@ import LocationRule from './rule/LocationRule'
 import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
 import { createNativeWrapper } from 'react-native-gesture-handler';
+import ContactInfo from './contacts/ContactInfo';
 var LR: LocationRule = new LocationRule();
 function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
   const [DistanceToTarget, setDistanceToTarget] = useState(" ");
 
-  function DistanceTrack(){
+  function DistanceTrack() {
     LR.createRule();
     setTimeout(() => {
       setDistanceToTarget(LR.getDistanceBetween());
