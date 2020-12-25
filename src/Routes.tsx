@@ -111,6 +111,8 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   var items = smsRuleModule.getAllSmsRules()
   var contacts: PhoneContacts = new PhoneContacts();
   var cl = contacts.getAllContacts();
+
+  var contactSMS: Sms = new Sms();  
   
   console.log(cl)
 
@@ -220,6 +222,11 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 
         />
         <Text>{resultContact}</Text>
+
+        {contactSMS.makeSMS(resultContact, resultItem)}
+        {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
+        <Button title={"Send SMS"} onPress={contactSMS.sendSMSFunction} />
+
           
       </Fragment>
       </View>
