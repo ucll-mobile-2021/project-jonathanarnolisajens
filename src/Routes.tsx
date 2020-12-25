@@ -271,13 +271,17 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
         </Text>
         <Text style={styles.sectionDescription}>
           Set the <Text style={styles.highlight}>DATE</Text> and <Text style={styles.highlight}>TIME</Text> you want to send the text. Then you can <Text style={styles.highlight}>SAVE</Text> the text        </Text>
-        <View>
-          <Button onPress={showDatepicker} title="Set date" />
-          <Button onPress={showTimepicker} title="Set time" />
+        <View style={styles.container}>
+          <View style={styles.buttonContainer}>
+            <Button onPress={showDatepicker} title="Set date"/>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={showTimepicker} title="Set time"/>
+          </View>
         </View>
         <Text>
-
-          {'Selected: ' + date.toLocaleString("nl-BE") /*veranderd de manier dat de date word weergegeven naar die zoals we dat in belgie doen */}
+          <Text style={styles.highlight}>You have selected: </Text>
+          {date.toLocaleString("nl-BE") /*veranderd de manier dat de date word weergegeven naar die zoals we dat in belgie doen */}
         </Text>
         <Text>
           {show && (

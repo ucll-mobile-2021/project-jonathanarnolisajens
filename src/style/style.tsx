@@ -23,6 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+
 export const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
@@ -32,7 +33,7 @@ export const styles = StyleSheet.create({
     right: 0,
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#f5f5f5',
   },
   sectionContainer: {
     marginTop: 32,
@@ -60,6 +61,16 @@ export const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
+  container: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    marginBottom: 20,
+  }
 });
 export const pickerSelectStyles = StyleSheet.create({ 
   inputAndroid: {
