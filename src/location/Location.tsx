@@ -10,7 +10,6 @@ var TargetLon = 0;
 var Loopdis = 0;
 var contact = "";
 var msg = "";
-var x: boolean = true;
 
 export default class Location{ 
 
@@ -133,13 +132,10 @@ calculatePreciseDistance = () => {
         this.calculatePreciseDistance();
       }
       else{
-        if(x){
         Locsms.makeSMS(contact,msg)
         Locsms.sendSMSFunction
         console.log("Arrived")
         clearInterval(intervalID);
-        x = false;
-        }
       }
     }, 30000);
   }
