@@ -8,8 +8,6 @@ var Locsms: Sms = new Sms();
 var TargetLat = 0;
 var TargetLon = 0;
 var Loopdis = 0;
-var contact = "";
-var msg = "";
 
 export default class Location{ 
 
@@ -47,6 +45,11 @@ calculatePreciseDistance = () => {
     this.preciseDistance = this.pdis/1000
     Loopdis = this.pdis
   };
+
+  ruleDistance(){
+    this.calculatePreciseDistance();
+    return (Loopdis/1000).toString();
+  }
   
   getDistanceBetween(){
     this.calculatePreciseDistance()
@@ -98,11 +101,11 @@ calculatePreciseDistance = () => {
   }
 
   setContact(contact: string){
-    contact = contact;
+    Locsms.updateSmsNumber(contact);
   }
 
   setMsg(msg: string){
-    msg = msg;
+    Locsms.updateSmsValue(msg);
   }
 
   setLon(coord: string){
@@ -128,17 +131,21 @@ calculatePreciseDistance = () => {
       if(Loopdis > this.inputDistance){
         console.log("Distance left: " + Loopdis)
         this.getLocation();
-        console.log("New location: " + this.CurrentLat + " & " + this.CurrentLon)
         this.calculatePreciseDistance();
       }
       else{
-        Locsms.makeSMS(contact,msg)
-        Locsms.sendSMSFunction
+        console.log(Locsms)
+        Locsms.sendSMSFunction()
         console.log("Arrived")
-        clearInterval(intervalID);
+        this.stopTracking(intervalID);
+        console.log('INTERVALID: ' + intervalID)
       }
     }, 30000);
+
+  }
+
+  stopTracking(intervalID: any){
+    clearInterval(intervalID);
+    console.log("STOP")
   }
 }
-
-/** UPDATE DID SOME SHIT HOPE I DIDN'T BREAK ANYTHING, Jonathan */

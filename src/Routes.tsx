@@ -520,10 +520,12 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
     LR.createRule();
     setDistanceToTarget("Loading...")
     setTimeout(() => {
-      setDistanceToTarget(LR.getDistanceBetween());
+      setDistanceToTarget(LR.getDistanceBetween() + " KM");
     }, 5000);
     setInterval(() => {
-      setDistanceToTarget(LR.getDistanceBetween());
+      var x: number = + LR.getDistanceBetween()
+      if(x> 1000)setDistanceToTarget(LR.getDistanceBetween() + " KM");
+      else setDistanceToTarget("Arrived")
     }, 30000);
   }
 
@@ -607,9 +609,6 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
                   }
 
                 />
-                <Text>{resultItem}</Text>
-
-
               </Fragment>
             </View>
             <View>
@@ -658,9 +657,6 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
                   }
 
                 />
-                <Text>{resultContact}</Text>
-
-
 
                 {contactSMS.makeSMS(resultContact, resultItem)}
                 {LR.setContact(resultContact)}
