@@ -497,7 +497,18 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
     currDate = currentDate;
   };
 
+  const [resultItem, setResult] = React.useState("");
+  const [resultContact, setContact] = React.useState("");
+
+  var items = smsRuleModule.getAllSmsRules()
+  var contacts: PhoneContacts = new PhoneContacts();
+  var cl = contacts.getAllContacts();
+
+  var contactSMS: Sms = new Sms();
+
   function saveTimedSMSFunction() {
+    contactSMS.makeSMS(resultContact, resultItem); 
+    DifTimer.set_timer_for_n_seconds(DifTimer.calculate_diff(date), contactSMS.sendSMSFunction)
     // run Timer functie met sendsms als callback functie
     // +- DifTimer.set_timer_for_n_seconds(calculate_diff(selectedDate), Sms.sendSMSFunction())
     console.log("saveSms")
@@ -537,8 +548,118 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
             />
           )}
         </Text>
-        <Button title={"Save SMS"} onPress={saveTimedSMSFunction} />
+        
       </View>
+
+      <View>
+            <View>
+              <Fragment>
+                {/**De dropdown met een hoop informatie.
+               * 
+               * Belangrijkste elementen:
+               *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
+               *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
+               * 
+               * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
+               */}
+                <SearchableDropdown
+                  onItemSelect={(item: SmsRule) => {
+                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                    console.log(item)
+                    setResult(item.getValue());
+                  }}
+                  items={items}
+                  containerStyle={{ padding: 5 }}
+                  itemTextStyle={{ color: '#222' }}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  resetValue={false}
+                  chip={true}
+
+                  textInputProps={
+                    {
+                      placeholder: "Select message",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                      },
+
+                    }
+                  }
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+
+                />
+              </Fragment>
+            </View>
+            <View>
+
+
+
+              <Fragment>
+                <SearchableDropdown
+                  onItemSelect={(item: ContactInfo) => {
+                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                    console.log(item)
+                    setContact(item.getNumber());
+                  }}
+                  items={cl}
+                  containerStyle={{ padding: 5 }}
+                  itemTextStyle={{ color: '#222' }}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  resetValue={false}
+                  chip={true}
+
+                  textInputProps={
+                    {
+                      placeholder: "Select contact",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                      },
+
+                    }
+                  }
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+
+                />
+
+                {contactSMS.makeSMS(resultContact, resultItem)}
+                {LR.setContact(resultContact)}
+                {LR.setMessage(resultItem)}
+              </Fragment>
+            </View>
+          </View>
+
+          <Button title={"Schedule SMS"} onPress={saveTimedSMSFunction} />
     </View>
 
   )
