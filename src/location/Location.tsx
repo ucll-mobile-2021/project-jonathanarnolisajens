@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import {getDistance, getPreciseDistance} from 'geolib';
-import { Text } from 'react-native';
+import Sms from './../sms/Sms'
+
+var Locsms: Sms = new Sms();
 
 var TargetLat = 0;
 var TargetLon = 0;
 var Loopdis = 0;
+var contact = "";
+var msg = "";
+var x: boolean = true;
 
 export default class Location{ 
 
@@ -93,6 +98,14 @@ calculatePreciseDistance = () => {
       return this.CurrentLat;
   }
 
+  setContact(contact: string){
+    contact = contact;
+  }
+
+  setMsg(msg: string){
+    msg = msg;
+  }
+
   setLon(coord: string){
     this.CurrentLon = parseFloat(coord);
   }
@@ -111,7 +124,8 @@ calculatePreciseDistance = () => {
 
   startTracking(){
     console.log("Current distance: " + Loopdis)
-    var interval = setInterval(() => {
+    console.log(this.inputDistance)
+    var intervalID = setInterval(() => {
       if(Loopdis > this.inputDistance){
         console.log("Distance left: " + Loopdis)
         this.getLocation();
@@ -119,12 +133,13 @@ calculatePreciseDistance = () => {
         this.calculatePreciseDistance();
       }
       else{
-
-        /** TODO
-         * INSERT SEND SMS HERE
-         */
+        if(x){
+        Locsms.makeSMS(contact,msg)
+        Locsms.sendSMSFunction
         console.log("Arrived")
-        clearInterval(interval);
+        clearInterval(intervalID);
+        x = false;
+        }
       }
     }, 30000);
   }

@@ -20,10 +20,12 @@ export default class LocationRule{
 
     setContact(contact: string){
         this.contact = contact;
+        Loc.setContact(contact);
     }
 
     setMessage(message: string){
         this.message = message;
+        Loc.setMsg(message);
     }
 
     setDestination(destination: string){

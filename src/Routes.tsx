@@ -9,7 +9,7 @@ import { ownStyle } from './style/style'
 import { TouchableOpacity } from 'react-native'
 import { DifTimer } from "./timer/Timer"
 import { smsRuleModule } from "./sms/smsRuleModule"
-import {FlatList} from "react-native"
+import { FlatList } from "react-native"
 interface RoutesProps { }
 
 export const Routes: React.FC<RoutesProps> = ({ }) => {
@@ -37,6 +37,136 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
     </NavigationContainer>
   )
 }
+
+
+export function preset() {
+
+  const [resultItem, setResult] = React.useState("");
+  const [resultContact, setContact] = React.useState("");
+
+  var items = smsRuleModule.getAllSmsRules()
+  var contacts: PhoneContacts = new PhoneContacts();
+  var cl = contacts.getAllContacts();
+
+  var contactSMS: Sms = new Sms();
+
+  return (
+    <View>
+      <View>
+        <Fragment>
+          {/**De dropdown met een hoop informatie.
+               * 
+               * Belangrijkste elementen:
+               *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
+               *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
+               * 
+               * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
+               */}
+          <SearchableDropdown
+            onItemSelect={(item: SmsRule) => {
+              /**Logt de Sms rule die geselecteerd is uit de dropdown */
+              /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+              console.log(item)
+              setResult(item.getValue());
+            }}
+            items={items}
+            containerStyle={{ padding: 5 }}
+            itemTextStyle={{ color: '#222' }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: '#ddd',
+              borderColor: '#bbb',
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            resetValue={false}
+            chip={true}
+
+            textInputProps={
+              {
+                placeholder: "Select message",
+                underlineColorAndroid: "transparent",
+                style: {
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                },
+
+              }
+            }
+            listProps={
+              {
+                nestedScrollEnabled: true,
+              }
+            }
+
+          />
+          <Text>{resultItem}</Text>
+
+
+        </Fragment>
+      </View>
+      <View>
+
+
+
+        <Fragment>
+          <SearchableDropdown
+            onItemSelect={(item: ContactInfo) => {
+              /**Logt de Sms rule die geselecteerd is uit de dropdown */
+              /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+              console.log(item)
+              setContact(item.getNumber());
+            }}
+            items={cl}
+            containerStyle={{ padding: 5 }}
+            itemTextStyle={{ color: '#222' }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: '#ddd',
+              borderColor: '#bbb',
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            resetValue={false}
+            chip={true}
+
+            textInputProps={
+              {
+                placeholder: "Select contact",
+                underlineColorAndroid: "transparent",
+                style: {
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                },
+
+              }
+            }
+            listProps={
+              {
+                nestedScrollEnabled: true,
+              }
+            }
+
+          />
+          <Text>{resultContact}</Text>
+
+          {contactSMS.makeSMS(resultContact, resultItem)}
+          {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
+          <Button title={"Send SMS"} onPress={contactSMS.sendSMSFunction} />
+
+
+        </Fragment>
+      </View>
+    </View>
+  )
+}
+
 
 
 
@@ -112,125 +242,125 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
   var contacts: PhoneContacts = new PhoneContacts();
   var cl = contacts.getAllContacts();
 
-  var contactSMS: Sms = new Sms();  
-  
+  var contactSMS: Sms = new Sms();
+
   console.log(cl)
 
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+
       <View>
-      <Fragment>
-        {/**De dropdown met een hoop informatie.
-                 * 
-                 * Belangrijkste elementen:
-                 *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
-                 *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
-                 * 
-                 * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
-                 */}
-        <SearchableDropdown
-          onItemSelect={(item: SmsRule) => {
-            /**Logt de Sms rule die geselecteerd is uit de dropdown */
-            /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
-            console.log(item)
-            setResult(item.getValue());
-          }}
-          items={items}
-          containerStyle={{ padding: 5 }}
-          itemTextStyle={{ color: '#222' }}
-          itemStyle={{
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: '#ddd',
-            borderColor: '#bbb',
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-          resetValue={false}
-          chip={true}
+        <Fragment>
+          {/**De dropdown met een hoop informatie.
+               * 
+               * Belangrijkste elementen:
+               *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
+               *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
+               * 
+               * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
+               */}
+          <SearchableDropdown
+            onItemSelect={(item: SmsRule) => {
+              /**Logt de Sms rule die geselecteerd is uit de dropdown */
+              /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+              console.log(item)
+              setResult(item.getValue());
+            }}
+            items={items}
+            containerStyle={{ padding: 5 }}
+            itemTextStyle={{ color: '#222' }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: '#ddd',
+              borderColor: '#bbb',
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            resetValue={false}
+            chip={true}
 
-          textInputProps={
-            {
-              placeholder: "Select message",
-              underlineColorAndroid: "transparent",
-              style: {
-                padding: 12,
-                borderWidth: 1,
-                borderColor: '#ccc',
-                borderRadius: 5,
-              },
+            textInputProps={
+              {
+                placeholder: "Select message",
+                underlineColorAndroid: "transparent",
+                style: {
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                },
 
+              }
             }
-          }
-          listProps={
-            {
-              nestedScrollEnabled: true,
+            listProps={
+              {
+                nestedScrollEnabled: true,
+              }
             }
-          }
 
-        />
-        <Text>{resultItem}</Text>
+          />
+          <Text>{resultItem}</Text>
 
 
-      </Fragment>
+        </Fragment>
       </View>
       <View>
 
 
 
-      <Fragment>
-      <SearchableDropdown
-          onItemSelect={(item: ContactInfo) => {
-            /**Logt de Sms rule die geselecteerd is uit de dropdown */
-            /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
-            console.log(item)
-            setContact(item.getNumber());
-          }}
-          items={cl}
-          containerStyle={{ padding: 5 }}
-          itemTextStyle={{ color: '#222' }}
-          itemStyle={{
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: '#ddd',
-            borderColor: '#bbb',
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-          resetValue={false}
-          chip={true}
+        <Fragment>
+          <SearchableDropdown
+            onItemSelect={(item: ContactInfo) => {
+              /**Logt de Sms rule die geselecteerd is uit de dropdown */
+              /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+              console.log(item)
+              setContact(item.getNumber());
+            }}
+            items={cl}
+            containerStyle={{ padding: 5 }}
+            itemTextStyle={{ color: '#222' }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: '#ddd',
+              borderColor: '#bbb',
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            resetValue={false}
+            chip={true}
 
-          textInputProps={
-            {
-              placeholder: "Select contact",
-              underlineColorAndroid: "transparent",
-              style: {
-                padding: 12,
-                borderWidth: 1,
-                borderColor: '#ccc',
-                borderRadius: 5,
-              },
+            textInputProps={
+              {
+                placeholder: "Select contact",
+                underlineColorAndroid: "transparent",
+                style: {
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5,
+                },
 
+              }
             }
-          }
-          listProps={
-            {
-              nestedScrollEnabled: true,
+            listProps={
+              {
+                nestedScrollEnabled: true,
+              }
             }
-          }
 
-        />
-        <Text>{resultContact}</Text>
+          />
+          <Text>{resultContact}</Text>
 
-        {contactSMS.makeSMS(resultContact, resultItem)}
-        {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
-        <Button title={"Send SMS"} onPress={contactSMS.sendSMSFunction} />
+          {contactSMS.makeSMS(resultContact, resultItem)}
+          {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
+          <Button title={"Send SMS"} onPress={contactSMS.sendSMSFunction} />
 
-          
-      </Fragment>
+
+        </Fragment>
       </View>
-
     </View>
 
   )
@@ -388,6 +518,7 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
 
   function DistanceTrack() {
     LR.createRule();
+    setDistanceToTarget("Loading...")
     setTimeout(() => {
       setDistanceToTarget(LR.getDistanceBetween());
     }, 5000);
@@ -395,24 +526,153 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
       setDistanceToTarget(LR.getDistanceBetween());
     }, 30000);
   }
+
+
+  const [resultItem, setResult] = React.useState("");
+  const [resultContact, setContact] = React.useState("");
+
+  var items = smsRuleModule.getAllSmsRules()
+  var contacts: PhoneContacts = new PhoneContacts();
+  var cl = contacts.getAllContacts();
+
+  var contactSMS: Sms = new Sms();
+
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Location rule</Text>
-        <Text style={styles.sectionDescription}>
-          Fill in the destination field and press the  <Text style={styles.highlight}>Set  Destination</Text> button to set your destination and start calculating the distance left
+      <View>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Location rule</Text>
+          <Text style={styles.sectionDescription}>
+            Fill in the destination field and press the  <Text style={styles.highlight}>Set  Destination</Text> button to set your destination and start calculating the distance left
               </Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => LR.setDestination(text)} />
-        <Button title="Set Destination" onPress={DistanceTrack}></Button>
-        <Button title="IGNORE" onPress={() => setDistanceToTarget(LR.getDistanceBetween())}></Button>
-        <Text style={{ paddingTop: 30 }}>{DistanceToTarget}</Text>
+          <TextInput placeholder={"Destination"}
+            style={{
+              padding: 10,
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 5,
+            }}
+            onChangeText={text => LR.setDestination(text)} />
+
+          <View>
+            <View>
+              <Fragment>
+                {/**De dropdown met een hoop informatie.
+               * 
+               * Belangrijkste elementen:
+               *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
+               *    items: De items die tevoorschijn komen (items is een array met SmsRule objecten. De name parameter is altijd degene die getoont word )
+               * 
+               * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
+               */}
+                <SearchableDropdown
+                  onItemSelect={(item: SmsRule) => {
+                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                    console.log(item)
+                    setResult(item.getValue());
+                  }}
+                  items={items}
+                  containerStyle={{ padding: 5 }}
+                  itemTextStyle={{ color: '#222' }}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  resetValue={false}
+                  chip={true}
+
+                  textInputProps={
+                    {
+                      placeholder: "Select message",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                      },
+
+                    }
+                  }
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+
+                />
+                <Text>{resultItem}</Text>
+
+
+              </Fragment>
+            </View>
+            <View>
+
+
+
+              <Fragment>
+                <SearchableDropdown
+                  onItemSelect={(item: ContactInfo) => {
+                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                    console.log(item)
+                    setContact(item.getNumber());
+                  }}
+                  items={cl}
+                  containerStyle={{ padding: 5 }}
+                  itemTextStyle={{ color: '#222' }}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: '#ddd',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  resetValue={false}
+                  chip={true}
+
+                  textInputProps={
+                    {
+                      placeholder: "Select contact",
+                      underlineColorAndroid: "transparent",
+                      style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                      },
+
+                    }
+                  }
+                  listProps={
+                    {
+                      nestedScrollEnabled: true,
+                    }
+                  }
+
+                />
+                <Text>{resultContact}</Text>
+
+
+
+                {contactSMS.makeSMS(resultContact, resultItem)}
+                {LR.setContact(resultContact)}
+                {LR.setMessage(resultItem)}
+              </Fragment>
+            </View>
+          </View>
+
+          <Button title="Set Destination" onPress={DistanceTrack}></Button>
+          <Text style={{ paddingTop: 30 }}>{DistanceToTarget}</Text>
+        </View>
       </View>
     </View>
   )
 }
-
-
-

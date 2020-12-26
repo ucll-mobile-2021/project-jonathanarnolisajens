@@ -13,7 +13,7 @@ export default class Sms {
     }
 
     makeSMS(TargetNumber : string, Message : string){
-        this.updateSmsNumber(TargetNumber)
+        this.updateSmsNumber(TargetNumber.replace(/\s/g, ""))
         this.updateSmsValue(Message)
     }
 
