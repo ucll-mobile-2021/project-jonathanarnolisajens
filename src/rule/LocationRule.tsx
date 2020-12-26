@@ -39,7 +39,7 @@ export default class LocationRule{
     }
 
     getDistanceBetween(){
-        return Loc.getDistanceBetween();
+        return Loc.ruleDistance();
     }
 
     createRule(){

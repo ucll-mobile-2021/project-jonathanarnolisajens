@@ -13,13 +13,13 @@ export default class Sms {
     }
 
     makeSMS(TargetNumber : string, Message : string){
-        this.updateSmsNumber(TargetNumber.replace(/\s/g, ""))
+        this.updateSmsNumber(TargetNumber)
         this.updateSmsValue(Message)
     }
 
     sendSMSFunction() {
         console.log(TargetNumber);
-        SendSMS.send(123, TargetNumber, Message, null);
+        SendSMS.send(123, TargetNumber.replace(/\s/g, ""), Message, null);
     }
     updateSmsNumber(value: string){
         this.TextInputNumber = value;
