@@ -374,7 +374,6 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 /**Sms rule */
 function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
 
-
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -383,22 +382,33 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
           Template SMS
     </Text>
         <Text style={styles.sectionDescription}>
-          Make a Template SMS to couple to a rule
+          Make a Template SMS
       </Text>
         <Text style={{ paddingTop: 30 }}>
           Title:
       </Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        <TextInput placeholder={"Title"}
+          style={{
+            padding: 12,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            borderRadius: 5,
+          }}
           onChangeText={text => smsRuleModule.updateTitle(text)} />
 
         <Text style={{ paddingTop: 30 }}>
           Message:
       </Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        <TextInput placeholder={"Message"}
+          style={{
+            padding: 12,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            borderRadius: 5,
+          }}
           onChangeText={text => smsRuleModule.updateMessage(text)} />
         <Button title={"Save SMS"} onPress={smsRuleModule.makeSms} />
+        {}
       </View>
     </View>
   )
@@ -417,7 +427,12 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
 
   function showrules() {
     let smsrules = smsRuleModule.getAllSmsRules().map(val =>
-      <Text key={val.name} >   {val.name}: {val.value}</Text>)
+      <Text style={{
+        padding: 12,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+      }} key={val.name} >   {val.name}: {val.value}</Text>)
     return smsrules
   }
 
@@ -428,7 +443,9 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
         View all your template SMS:
       </Text>
       <Button title={"Reload page"} onPress={handleClick} />
-      {showrules()}
+      <ScrollView>
+        {showrules()}
+      </ScrollView>
     </View>
   )
 }
@@ -528,7 +545,7 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
     }, 5000);
     setInterval(() => {
       var x: number = + LR.getDistanceBetween()
-      if(x> 1000)setDistanceToTarget(LR.getDistanceBetween() + " KM");
+      if (x > 1000) setDistanceToTarget(LR.getDistanceBetween() + " KM");
       else setDistanceToTarget("Arrived")
     }, 30000);
   }
