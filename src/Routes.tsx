@@ -180,7 +180,7 @@ var SMS: Sms = new Sms();
 function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 
   var items = smsRuleModule.getAllSmsRules()
-  var textInput = React.createRef();
+  
 
   return (
     <>
@@ -427,13 +427,24 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
 
   function showrules() {
     let smsrules = smsRuleModule.getAllSmsRules().map(val =>
-      <Text style={{
-        padding: 12,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-      }} key={val.name} >   {val.name}: {val.value}</Text>)
+      <View style={styles.container} key={val.name + "mainview"}>
+        <Text style={{
+          padding: 12,
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 5,
+          flex: 1,
+        }} key={val.name} >   {val.name}: {val.value}</Text>
+        <View style={{paddingRight: 10}} key={val.name + "buttonview"}>
+          <Button key={val.name + "button"} title={"delete"} onPress={() => dele(val.name)} />
+        </View>
+      </View>)
     return smsrules
+  }
+
+  function dele(name : string){
+    smsRuleModule.deleteSms(name)
+    forceUpdate()
   }
 
   return (

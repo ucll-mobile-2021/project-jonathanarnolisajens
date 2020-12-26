@@ -27,5 +27,13 @@ export module smsRuleModule {
     export function getAllSmsRules(){
         return arrSms
     }
+
+    export function deleteSms(name :string){
+        for (var sms in arrSms){
+            if (arrSms[sms].getTitle() == name){
+                arrSms.splice(Number(sms), 1)
+            }
+        }
+    }
     
 }
