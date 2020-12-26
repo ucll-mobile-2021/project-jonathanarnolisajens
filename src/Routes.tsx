@@ -303,8 +303,8 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
                 nestedScrollEnabled: true,
               }
             }
-
           />
+
           <Text>{resultItem}</Text>
 
 
@@ -373,7 +373,14 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 
 /**Sms rule */
 function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
+  const [, forceUpdateRule] = useReducer(x => x + 1, 0);
 
+  function handleClick() {
+    smsRuleModule.makeSms()
+    navigation.navigate("ShowSmsRule")
+    
+
+  }
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -407,8 +414,8 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
             borderRadius: 5,
           }}
           onChangeText={text => smsRuleModule.updateMessage(text)} />
-        <Button title={"Save SMS"} onPress={smsRuleModule.makeSms} />
-        {}
+        <Button title={"Save SMS"} onPress={handleClick} />
+        
       </View>
     </View>
   )
@@ -417,9 +424,8 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
 
 /**Show all template SMS */
 function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">) {
-
+  
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-
   function handleClick() {
     forceUpdate();
   }
@@ -450,6 +456,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+      <Button title={"add sms"} onPress={() => navigation.navigate("SMSRule")}/>
       <Text>
         View all your template SMS:
       </Text>
