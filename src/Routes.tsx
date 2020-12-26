@@ -180,6 +180,7 @@ var SMS: Sms = new Sms();
 function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 
   var items = smsRuleModule.getAllSmsRules()
+  var textInput = React.createRef();
 
   return (
     <>
@@ -210,7 +211,10 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
             </Text>
               <TextInput
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                onChangeText={text => SMS.updateSmsValue(text)} />
+                onChangeText={text => SMS.updateSmsValue(text) 
+                }
+
+                />
 
               <Text style={{ paddingTop: 30 }}>
                 Phone number:
