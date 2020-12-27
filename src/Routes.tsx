@@ -33,6 +33,7 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
         <Drawer.Screen name="GPS" component={DistanceTracking} />
         <Drawer.Screen name="Timed sms" component={TimedSms} />
         <Drawer.Screen name="YEET" component={YEET} />
+        <Drawer.Screen name="Receive sms for GPS" component={ReceiveSms} />
       </Drawer.Navigator>
     </NavigationContainer>
   )
@@ -677,6 +678,109 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
           <Button title={"Schedule SMS"} onPress={saveTimedSMSFunction} />
     </View>
 
+  )
+}
+
+/*receive sms*/
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { selectContactPhone } from 'react-native-select-contact';
+function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for GPS">) {
+
+  let number: string = "";
+
+  const storage_key = '@number';
+
+  const storeData = async (value: string) => {
+    try {
+      await AsyncStorage.setItem(storage_key, value);
+      console.log(`Stored data. ${value}`);
+    } catch (e) {
+      // saving error
+    }
+  }
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(storage_key)
+      console.log(`fetched data. ${value}`);
+      if(value !== null) {
+        // value previously stored
+        return value;
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+
+  const clearList = async () => {
+    try {
+      await AsyncStorage.removeItem(storage_key)
+    } catch(e) {
+      // remove error
+    }
+  
+    console.log('Done.');
+  }
+ 
+  const getPhoneNumber = async () => {
+    return selectContactPhone()
+        .then(selection => {
+            if (!selection) {
+                return null;
+            }
+
+            let { contact, selectedPhone } = selection;
+            let newnumber=selectedPhone.number;
+            console.log(`Before saveNumbers`);
+            /*const saveNumbers = async () => {
+              console.log(`After saveNumbers`);
+              numbers = await AsyncStorage.getItem(storage_key);
+              if (typeof numbers === 'string') {
+                let array = JSON.parse(numbers);
+                array.push(number);
+                await AsyncStorage.setItem(storage_key, JSON.stringify(array));
+              } else {
+                let newarray: string[] = [];
+                newarray.push(number);
+                await AsyncStorage.setItem(storage_key, JSON.stringify(newarray));
+              }
+
+            };
+            saveNumbers();*/
+            storeData(newnumber);
+            getData().then( res =>
+              console.log(`Stored data. ${res}`)
+            )
+            
+            console.log(`Selected ${selectedPhone.type} phone number ${selectedPhone.number} from ${contact.name}`);
+            return selectedPhone.number;
+        });  
+  }
+  
+  return (
+    <View>
+      <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+      <View>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Message receive rule</Text>
+          <Text style={styles.sectionDescription}>
+            Select from your contacts the contacts who can send you  <Text style={styles.highlight}>GPS requests</Text>
+              </Text>
+
+          <Text>{"\n"}</Text>
+          <Button title="Add contact to list" onPress={getPhoneNumber}></Button>
+          <View>
+            <FlatList
+              data={number}
+              renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+            />
+          </View>
+          <Text>{"\n"}</Text>
+          <Button title="Clear list" onPress={clearList}></Button>
+        </View>
+      </View>
+    </View>
   )
 }
 

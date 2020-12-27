@@ -11,6 +11,7 @@ export type RouteParamList = {
     "New sms rule": undefined,
     "View sms rule": undefined,
     YEET: undefined,
+    ReceiveSms: undefined
 };
 
 export type RouteDrawerParamList<T extends keyof RouteParamList> = {

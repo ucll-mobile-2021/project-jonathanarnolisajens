@@ -70,6 +70,11 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     marginBottom: 20,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   }
 });
 export const pickerSelectStyles = StyleSheet.create({ 
