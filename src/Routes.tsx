@@ -729,7 +729,8 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"Location 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Location rule</Text>
           <Text style={styles.sectionDescription}>
-            Fill in the destination field and press the  <Text style={styles.highlight}>Set  Destination</Text> button to set your destination and start calculating the distance left
+            Fill in the destination field and <Text style={styles.highlight}>Select a message and contact</Text>, press the <Text style={styles.highlight}>Set Destination</Text> button to set your destination and start calculating the distance left.
+            You will send the template SMS to your contact when the distance left is 1KM or less.
               </Text>
           <TextInput placeholder={"Destination"}
             style={{
