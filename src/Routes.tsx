@@ -315,8 +315,6 @@ function YEET({ navigation, route }: RouteDrawerParamList<"Template SMS">) {
             }
           />
 
-          <Text>{resultItem}</Text>
-
 
         </Fragment>
       </View>
@@ -366,7 +364,6 @@ function YEET({ navigation, route }: RouteDrawerParamList<"Template SMS">) {
             }
 
           />
-          <Text>{resultContact}</Text>
 
           {contactSMS.makeSMS(resultContact, resultItem)}
           {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
@@ -690,9 +687,7 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed SMS">) {
 
 /** GPS screen */
 import LocationRule from './rule/LocationRule'
-import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
-import { createNativeWrapper } from 'react-native-gesture-handler';
 import ContactInfo from './contacts/ContactInfo';
 var LR: LocationRule = new LocationRule();
 function DistanceTracking({ navigation, route }: RouteDrawerParamList<"Location Rule">) {
