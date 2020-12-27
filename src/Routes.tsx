@@ -398,7 +398,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New SMS rule">) {
         <Text style={styles.sectionDescription}>
           Make a Template SMS. You can later use these templates to send messages
       </Text>
-        <Text style={{ paddingTop: 30 }}>
+        <Text style={{ paddingTop: 20 }}>
           Title (unique):
       </Text>
         <TextInput placeholder={"Title"}
@@ -410,7 +410,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New SMS rule">) {
           }}
           onChangeText={text => smsRuleModule.updateTitle(text)} />
 
-        <Text style={{ paddingTop: 30 }}>
+        <Text style={{ paddingTop: 20 }}>
           Message:
       </Text>
         <TextInput placeholder={"Message"}
@@ -724,8 +724,7 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"Location 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Location rule</Text>
           <Text style={styles.sectionDescription}>
-            Fill in the destination field and <Text style={styles.highlight}>Select a message and contact</Text>, press the <Text style={styles.highlight}>Set Destination</Text> button to set your destination and start calculating the distance left.
-            You will send the template SMS to your contact when the distance left is 1KM or less.
+            Fill in the destination field and <Text style={styles.highlight}>Select a message and contact</Text>, press the <Text style={styles.highlight}>Set Destination</Text> button to send when the distance left is 1KM or less.
               </Text>
           <TextInput placeholder={"Destination"}
             style={{
