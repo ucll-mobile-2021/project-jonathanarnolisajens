@@ -28,10 +28,10 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="SMSRule" component={SMSRule} />
-        <Drawer.Screen name="ShowSmsRule" component={ShowSmsRule} />
+        <Drawer.Screen name="New sms rule" component={SMSRule} />
+        <Drawer.Screen name="View sms rule" component={ShowSmsRule} />
         <Drawer.Screen name="GPS" component={DistanceTracking} />
-        <Drawer.Screen name="TimedSms" component={TimedSms} />
+        <Drawer.Screen name="Timed sms" component={TimedSms} />
         <Drawer.Screen name="YEET" component={YEET} />
       </Drawer.Navigator>
     </NavigationContainer>
@@ -210,6 +210,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
                 Message:
             </Text>
               <TextInput
+                placeholder={"Message"}
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                 onChangeText={text => SMS.updateSmsValue(text) 
                 }
@@ -220,6 +221,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
                 Phone number:
             </Text>
               <TextInput
+                placeholder={"Phone number"}
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                 onChangeText={text => SMS.updateSmsNumber(text)}
               />
@@ -372,12 +374,12 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 
 
 /**Sms rule */
-function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
+function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
   const [, forceUpdateRule] = useReducer(x => x + 1, 0);
 
   function handleClick() {
     smsRuleModule.makeSms()
-    navigation.navigate("ShowSmsRule")
+    navigation.navigate("View sms rule")
     
 
   }
@@ -389,10 +391,10 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
           Template SMS
     </Text>
         <Text style={styles.sectionDescription}>
-          Make a Template SMS
+          Make a Template SMS. You can use these template SMS' in your Rules
       </Text>
         <Text style={{ paddingTop: 30 }}>
-          Title:
+          Title (unique):
       </Text>
         <TextInput placeholder={"Title"}
           style={{
@@ -423,7 +425,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"SMSRule">) {
 
 
 /**Show all template SMS */
-function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">) {
+function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"View sms rule">) {
   
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   function handleClick() {
@@ -454,17 +456,30 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
   }
 
   return (
-    <View>
+    <SafeAreaView >
+       <ScrollView>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
-      <Button title={"add sms"} onPress={() => navigation.navigate("SMSRule")}/>
+      <View style={styles.sectionContainer}>
+
+      <Text style={styles.sectionTitle}>
+          View template sms
+      </Text>
+      <Text  style={styles.sectionDescription}>
+          On this page you can view all your rules. Use <Text style={styles.highlight}>ADD SMS</Text> to create a new rule. Reload the page (<Text style={styles.highlight}>RELOAD PAGE</Text>) to see your changes and click on the <Text style={styles.highlight}>DELETE</Text> button nect to the rule to remove it.
+      </Text>
+      <Button title={"add sms"} onPress={() => navigation.navigate("New sms rule")}/>
+      
       <Text>
         View all your template SMS:
       </Text>
       <Button title={"Reload page"} onPress={handleClick} />
-      <ScrollView>
-        {showrules()}
-      </ScrollView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          {showrules()}
+        </ScrollView>
     </View>
+    </ScrollView>
+    </SafeAreaView>
+
   )
 }
 
@@ -472,7 +487,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"ShowSmsRule">)
 /** Timed SMS */
 import DateTimePicker from '@react-native-community/datetimepicker'; //https://github.com/react-native-datetimepicker/datetimepicker
 
-function TimedSms({ navigation, route }: RouteDrawerParamList<"TimedSms">) {
+function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
   var currDate = new Date();
 
   const [date, setDate] = React.useState(new Date());

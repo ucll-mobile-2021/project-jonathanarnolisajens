@@ -7,9 +7,9 @@ import { RouteProp } from "@react-navigation/native";
 export type RouteParamList = {
     Home: undefined,
     GPS: undefined,
-    TimedSms: undefined,
-    SMSRule: undefined,
-    ShowSmsRule: undefined,
+    "Timed sms": undefined,
+    "New sms rule": undefined,
+    "View sms rule": undefined,
     YEET: undefined,
 };
 
