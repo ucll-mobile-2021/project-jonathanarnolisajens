@@ -5,13 +5,13 @@ import { RouteProp } from "@react-navigation/native";
  * de naam hier en in het name field vd screen is de naam die je ziet in de navbar
 */
 export type RouteParamList = {
-    Home: undefined,
-    GPS: undefined,
-    "Timed sms": undefined,
-    "New sms rule": undefined,
-    "View sms rule": undefined,
-    YEET: undefined,
-    ReceiveSms: undefined
+    "Normal SMS": undefined,
+    "Location Rule": undefined,
+    "Timed SMS": undefined,
+    "New SMS rule": undefined,
+    "View SMS rule": undefined,
+    "Template SMS": undefined,
+    "Receive sms for GPS": undefined,
 };
 
 export type RouteDrawerParamList<T extends keyof RouteParamList> = {

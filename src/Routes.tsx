@@ -26,14 +26,14 @@ export const Routes: React.FC<RoutesProps> = ({ }) => {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="New sms rule" component={SMSRule} />
-        <Drawer.Screen name="View sms rule" component={ShowSmsRule} />
-        <Drawer.Screen name="GPS" component={DistanceTracking} />
-        <Drawer.Screen name="Timed sms" component={TimedSms} />
-        <Drawer.Screen name="YEET" component={YEET} />
-        <Drawer.Screen name="Receive sms for GPS" component={ReceiveSms} />
+      <Drawer.Navigator initialRouteName="Normal SMS">
+        <Drawer.Screen name="Normal SMS" component={Home} />
+        <Drawer.Screen name="Template SMS" component={YEET} />
+        <Drawer.Screen name="View SMS rule" component={ShowSmsRule} />
+        <Drawer.Screen name="New SMS rule" component={SMSRule} />
+        <Drawer.Screen name="Location Rule" component={DistanceTracking} />
+        <Drawer.Screen name="Timed SMS" component={TimedSms} />
+        <Drawer.Screen name="Receive sms for GPS" component={ReceiveSms} /> 
       </Drawer.Navigator>
     </NavigationContainer>
   )
@@ -178,10 +178,10 @@ import Sms from './sms/Sms'
 
 
 var SMS: Sms = new Sms();
-function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
+function Home({ navigation, route }: RouteDrawerParamList<"Normal SMS">) {
 
   var items = smsRuleModule.getAllSmsRules()
-  
+
 
   return (
     <>
@@ -201,7 +201,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
           )}
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Send SMS App</Text>
+              <Text style={styles.sectionTitle}>Send a regular SMS</Text>
               <Text style={styles.sectionDescription}>
                 use the button <Text style={styles.highlight}>Send SMS</Text> to send a text to a person
               </Text>
@@ -213,10 +213,10 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
               <TextInput
                 placeholder={"Message"}
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                onChangeText={text => SMS.updateSmsValue(text) 
+                onChangeText={text => SMS.updateSmsValue(text)
                 }
 
-                />
+              />
 
               <Text style={{ paddingTop: 30 }}>
                 Phone number:
@@ -237,7 +237,7 @@ function Home({ navigation, route }: RouteDrawerParamList<"Home">) {
 
 
 import PhoneContacts from './contacts/contacts'
-function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
+function YEET({ navigation, route }: RouteDrawerParamList<"Template SMS">) {
   const [resultItem, setResult] = React.useState("");
   const [resultContact, setContact] = React.useState("");
 
@@ -257,6 +257,14 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
 
+      <View style={styles.body}>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Send a template SMS</Text>
+          <Text style={styles.sectionDescription}>
+            use the <Text style={styles.highlight}>Select message</Text> and the <Text style={styles.highlight}>Select contact</Text> fields to select a template message and a contact. Use the button <Text style={styles.highlight}>Send SMS</Text> to send
+              </Text>
+        </View>
+      </View>
       <View>
         <Fragment>
           {/**De dropdown met een hoop informatie.
@@ -308,8 +316,6 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
             }
           />
 
-          <Text>{resultItem}</Text>
-
 
         </Fragment>
       </View>
@@ -359,7 +365,6 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
             }
 
           />
-          <Text>{resultContact}</Text>
 
           {contactSMS.makeSMS(resultContact, resultItem)}
           {console.log(contactSMS.TextInputNumber + "\t" + contactSMS.TextInputValue)}
@@ -375,13 +380,13 @@ function YEET({ navigation, route }: RouteDrawerParamList<"YEET">) {
 
 
 /**Sms rule */
-function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
+function SMSRule({ navigation, route }: RouteDrawerParamList<"New SMS rule">) {
   const [, forceUpdateRule] = useReducer(x => x + 1, 0);
 
   function handleClick() {
     smsRuleModule.makeSms()
-    navigation.navigate("View sms rule")
-    
+    navigation.navigate("View SMS rule")
+
 
   }
   return (
@@ -392,9 +397,9 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
           Template SMS
     </Text>
         <Text style={styles.sectionDescription}>
-          Make a Template SMS. You can use these template SMS' in your Rules
+          Make a Template SMS. You can later use these templates to send messages
       </Text>
-        <Text style={{ paddingTop: 30 }}>
+        <Text style={{ paddingTop: 20 }}>
           Title (unique):
       </Text>
         <TextInput placeholder={"Title"}
@@ -406,7 +411,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
           }}
           onChangeText={text => smsRuleModule.updateTitle(text)} />
 
-        <Text style={{ paddingTop: 30 }}>
+        <Text style={{ paddingTop: 20 }}>
           Message:
       </Text>
         <TextInput placeholder={"Message"}
@@ -418,7 +423,7 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
           }}
           onChangeText={text => smsRuleModule.updateMessage(text)} />
         <Button title={"Save SMS"} onPress={handleClick} />
-        
+
       </View>
     </View>
   )
@@ -426,8 +431,8 @@ function SMSRule({ navigation, route }: RouteDrawerParamList<"New sms rule">) {
 
 
 /**Show all template SMS */
-function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"View sms rule">) {
-  
+function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"View SMS rule">) {
+
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   function handleClick() {
     forceUpdate();
@@ -444,41 +449,41 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"View sms rule"
           borderRadius: 5,
           flex: 1,
         }} key={val.name} >   {val.name}: {val.value}</Text>
-        <View style={{paddingRight: 10}} key={val.name + "buttonview"}>
+        <View style={{ paddingRight: 10 }} key={val.name + "buttonview"}>
           <Button key={val.name + "button"} title={"delete"} onPress={() => dele(val.name)} />
         </View>
       </View>)
     return smsrules
   }
 
-  function dele(name : string){
+  function dele(name: string) {
     smsRuleModule.deleteSms(name)
     forceUpdate()
   }
 
   return (
     <SafeAreaView >
-       <ScrollView>
-      <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
-      <View style={styles.sectionContainer}>
+      <ScrollView>
+        <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
+        <View style={styles.sectionContainer}>
 
-      <Text style={styles.sectionTitle}>
-          View template sms
+          <Text style={styles.sectionTitle}>
+            View Template SMS
       </Text>
-      <Text  style={styles.sectionDescription}>
-          On this page you can view all your rules. Use <Text style={styles.highlight}>ADD SMS</Text> to create a new rule. Reload the page (<Text style={styles.highlight}>RELOAD PAGE</Text>) to see your changes and click on the <Text style={styles.highlight}>DELETE</Text> button nect to the rule to remove it.
+          <Text style={styles.sectionDescription}>
+            On this page you can view all your rules. Use <Text style={styles.highlight}>ADD SMS</Text> to create a new rule. Reload the page (<Text style={styles.highlight}>RELOAD PAGE</Text>) to see your changes and click on the <Text style={styles.highlight}>DELETE</Text> button next to the rule to remove it.
       </Text>
-      <Button title={"add sms"} onPress={() => navigation.navigate("New sms rule")}/>
-      
-      <Text>
-        View all your template SMS:
-      </Text>
-      <Button title={"Reload page"} onPress={handleClick} />
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          {showrules()}
-        </ScrollView>
-    </View>
-    </ScrollView>
+          <Button title={"ADD TEMPLATE SMS"} onPress={() => navigation.navigate("New SMS rule")} />
+
+          <Text>
+
+          </Text>
+          <Button title={"Reload page"} onPress={handleClick} />
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            {showrules()}
+          </ScrollView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
 
   )
@@ -488,7 +493,7 @@ function ShowSmsRule({ navigation, route }: RouteDrawerParamList<"View sms rule"
 /** Timed SMS */
 import DateTimePicker from '@react-native-community/datetimepicker'; //https://github.com/react-native-datetimepicker/datetimepicker
 
-function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
+function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed SMS">) {
   var currDate = new Date();
 
   const [date, setDate] = React.useState(new Date());
@@ -523,7 +528,7 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
   var contactSMS: Sms = new Sms();
 
   function saveTimedSMSFunction() {
-    contactSMS.makeSMS(resultContact, resultItem); 
+    contactSMS.makeSMS(resultContact, resultItem);
     DifTimer.set_timer_for_n_seconds(DifTimer.calculate_diff(date), contactSMS.sendSMSFunction)
     // run Timer functie met sendsms als callback functie
     // +- DifTimer.set_timer_for_n_seconds(calculate_diff(selectedDate), Sms.sendSMSFunction())
@@ -564,13 +569,13 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
             />
           )}
         </Text>
-        
+
       </View>
 
       <View>
-            <View>
-              <Fragment>
-                {/**De dropdown met een hoop informatie.
+        <View>
+          <Fragment>
+            {/**De dropdown met een hoop informatie.
                * 
                * Belangrijkste elementen:
                *    onItemSelect: wordt uitgevoerd wanneer je op een item klikt
@@ -578,104 +583,104 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed sms">) {
                * 
                * Library die ik gebruik: https://github.com/zubairpaizer/react-native-searchable-dropdown/blob/master/readme.md
                */}
-                <SearchableDropdown
-                  onItemSelect={(item: SmsRule) => {
-                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
-                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
-                    console.log(item)
-                    setResult(item.getValue());
-                  }}
-                  items={items}
-                  containerStyle={{ padding: 5 }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: '#ddd',
-                    borderColor: '#bbb',
+            <SearchableDropdown
+              onItemSelect={(item: SmsRule) => {
+                /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                console.log(item)
+                setResult(item.getValue());
+              }}
+              items={items}
+              containerStyle={{ padding: 5 }}
+              itemTextStyle={{ color: '#222' }}
+              itemStyle={{
+                padding: 10,
+                marginTop: 2,
+                backgroundColor: '#ddd',
+                borderColor: '#bbb',
+                borderWidth: 1,
+                borderRadius: 5,
+              }}
+              resetValue={false}
+              chip={true}
+
+              textInputProps={
+                {
+                  placeholder: "Select message",
+                  underlineColorAndroid: "transparent",
+                  style: {
+                    padding: 12,
                     borderWidth: 1,
+                    borderColor: '#ccc',
                     borderRadius: 5,
-                  }}
-                  resetValue={false}
-                  chip={true}
+                  },
 
-                  textInputProps={
-                    {
-                      placeholder: "Select message",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                        padding: 12,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                      },
+                }
+              }
+              listProps={
+                {
+                  nestedScrollEnabled: true,
+                }
+              }
 
-                    }
-                  }
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
-
-                />
-              </Fragment>
-            </View>
-            <View>
+            />
+          </Fragment>
+        </View>
+        <View>
 
 
 
-              <Fragment>
-                <SearchableDropdown
-                  onItemSelect={(item: ContactInfo) => {
-                    /**Logt de Sms rule die geselecteerd is uit de dropdown */
-                    /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
-                    console.log(item)
-                    setContact(item.getNumber());
-                  }}
-                  items={cl}
-                  containerStyle={{ padding: 5 }}
-                  itemTextStyle={{ color: '#222' }}
-                  itemStyle={{
-                    padding: 10,
-                    marginTop: 2,
-                    backgroundColor: '#ddd',
-                    borderColor: '#bbb',
+          <Fragment>
+            <SearchableDropdown
+              onItemSelect={(item: ContactInfo) => {
+                /**Logt de Sms rule die geselecteerd is uit de dropdown */
+                /**Hier moet dan de code komen om de message er uit te halen om dan in de SMS te steken. */
+                console.log(item)
+                setContact(item.getNumber());
+              }}
+              items={cl}
+              containerStyle={{ padding: 5 }}
+              itemTextStyle={{ color: '#222' }}
+              itemStyle={{
+                padding: 10,
+                marginTop: 2,
+                backgroundColor: '#ddd',
+                borderColor: '#bbb',
+                borderWidth: 1,
+                borderRadius: 5,
+              }}
+              resetValue={false}
+              chip={true}
+
+              textInputProps={
+                {
+                  placeholder: "Select contact",
+                  underlineColorAndroid: "transparent",
+                  style: {
+                    padding: 12,
                     borderWidth: 1,
+                    borderColor: '#ccc',
                     borderRadius: 5,
-                  }}
-                  resetValue={false}
-                  chip={true}
+                  },
 
-                  textInputProps={
-                    {
-                      placeholder: "Select contact",
-                      underlineColorAndroid: "transparent",
-                      style: {
-                        padding: 12,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                      },
+                }
+              }
+              listProps={
+                {
+                  nestedScrollEnabled: true,
+                }
+              }
 
-                    }
-                  }
-                  listProps={
-                    {
-                      nestedScrollEnabled: true,
-                    }
-                  }
+            />
 
-                />
+            {contactSMS.makeSMS(resultContact, resultItem)}
+            {LR.setContact(resultContact)}
+            {LR.setMessage(resultItem)}
+          </Fragment>
+        </View>
+      </View>
 
-                {contactSMS.makeSMS(resultContact, resultItem)}
-                {LR.setContact(resultContact)}
-                {LR.setMessage(resultItem)}
-              </Fragment>
-            </View>
-          </View>
-
-          <Button title={"Schedule SMS"} onPress={saveTimedSMSFunction} />
+      <Button title={"Schedule SMS"} onPress={saveTimedSMSFunction} />
     </View>
 
   )
@@ -786,12 +791,10 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
 
 /** GPS screen */
 import LocationRule from './rule/LocationRule'
-import { Screen } from 'react-native-screens';
 import SmsRule from './sms/SmsRule';
-import { createNativeWrapper } from 'react-native-gesture-handler';
 import ContactInfo from './contacts/ContactInfo';
 var LR: LocationRule = new LocationRule();
-function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
+function DistanceTracking({ navigation, route }: RouteDrawerParamList<"Location Rule">) {
   const [myTargetLocation, setTargetLocation] = useState("Destination");
   const [DistanceToTarget, setDistanceToTarget] = useState(" ");
 
@@ -825,7 +828,7 @@ function DistanceTracking({ navigation, route }: RouteDrawerParamList<"GPS">) {
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Location rule</Text>
           <Text style={styles.sectionDescription}>
-            Fill in the destination field and press the  <Text style={styles.highlight}>Set  Destination</Text> button to set your destination and start calculating the distance left
+            Fill in the destination field and <Text style={styles.highlight}>Select a message and contact</Text>, press the <Text style={styles.highlight}>Set Destination</Text> button to send when the distance left is 1KM or less.
               </Text>
           <TextInput placeholder={"Destination"}
             style={{
