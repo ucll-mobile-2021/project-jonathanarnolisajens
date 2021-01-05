@@ -1,4 +1,4 @@
-import React, { useReducer, useState, Fragment } from 'react';
+import React, { useReducer, useState, Fragment, useEffect } from 'react';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,6 +50,8 @@ export function preset() {
   var cl = contacts.getAllContacts();
 
   var contactSMS: Sms = new Sms();
+
+  
 
   return (
     <View>
@@ -686,19 +688,26 @@ function TimedSms({ navigation, route }: RouteDrawerParamList<"Timed SMS">) {
   )
 }
 
+
+
+
 /*receive sms*/
+import Geolocation from '@react-native-community/geolocation';
+import SmsListener from 'react-native-android-sms-listener';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { selectContactPhone } from 'react-native-select-contact';
 function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for GPS">) {
 
-  let number: string = "";
-
   const storage_key = '@number';
+
+  //let number = AsyncStorage.getItem(storage_key);
+
+   const [number, setNumber] = useState('')
 
   const storeData = async (value: string) => {
     try {
-      await AsyncStorage.setItem(storage_key, value);
-      console.log(`Stored data. ${value}`);
+      await AsyncStorage.setItem(storage_key, number); //value
+      console.log(`Stored data. ${number}`); //value
     } catch (e) {
       // saving error
     }
@@ -710,17 +719,30 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
       console.log(`fetched data. ${value}`);
       if(value !== null) {
         // value previously stored
-        return value;
+        //return value;
+        setNumber(value)
       }
+      setNumber("")
     } catch(e) {
       // error reading value
     }
   }
 
+  useEffect(() => {
+    getData()
+  }, [])
+
+  // let number = getData().then( res =>
+  //   {return res;}
+  // )
+
+let subscription: { remove: () => void; };
 
   const clearList = async () => {
     try {
-      await AsyncStorage.removeItem(storage_key)
+      //await AsyncStorage.removeItem(storage_key)
+      await AsyncStorage.clear().then(getData)
+      subscription.remove()
     } catch(e) {
       // remove error
     }
@@ -738,31 +760,36 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
             let { contact, selectedPhone } = selection;
             let newnumber=selectedPhone.number;
             console.log(`Before saveNumbers`);
-            /*const saveNumbers = async () => {
-              console.log(`After saveNumbers`);
-              numbers = await AsyncStorage.getItem(storage_key);
-              if (typeof numbers === 'string') {
-                let array = JSON.parse(numbers);
-                array.push(number);
-                await AsyncStorage.setItem(storage_key, JSON.stringify(array));
-              } else {
-                let newarray: string[] = [];
-                newarray.push(number);
-                await AsyncStorage.setItem(storage_key, JSON.stringify(newarray));
+            setNumber(newnumber)
+            subscription = SmsListener.addListener((message: any) => {
+              console.info(message)
+              // if location ask
+              if (message.body.toLowerCase().includes('location')){
+                // send sms with coordinated
+                Geolocation.getCurrentPosition(info => {
+                  console.log(info);
+                  SMS.updateSmsNumber(newnumber);
+                  SMS.updateSmsValue("My coordinates are: Lat: " + info.coords.latitude + ", Lon: " + info.coords.longitude);
+                  SMS.sendSMSFunction();
+                  SMS.updateSmsValue("Thanks for asking!");
+                  SMS.sendSMSFunction();
+                  let lat = info.coords.latitude.toString();
+                  let lon = info.coords.longitude.toString();
+                  SMS.updateSmsValue("https://www.openstreetmap.org/search?whereami=1&query=" + lat + "%2C" + lon + "#map=17/" + lat +"/" + lon);
+                  SMS.sendSMSFunction();
+                })
               }
-
-            };
-            saveNumbers();*/
-            storeData(newnumber);
-            getData().then( res =>
-              console.log(`Stored data. ${res}`)
-            )
+            })
             
             console.log(`Selected ${selectedPhone.type} phone number ${selectedPhone.number} from ${contact.name}`);
             return selectedPhone.number;
         });  
   }
   
+  /**<FlatList
+              data={number}
+              renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+            /> */
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -770,19 +797,16 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Message receive rule</Text>
           <Text style={styles.sectionDescription}>
-            Select from your contacts the contacts who can send you  <Text style={styles.highlight}>GPS requests</Text>
+            Select from your contacts the contacts who can send you  <Text style={styles.highlight}>GPS requests</Text>. Their text needs to contain the word <Text style={styles.highlight}>'location'</Text> to receive your reply
               </Text>
 
           <Text>{"\n"}</Text>
-          <Button title="Add contact to list" onPress={getPhoneNumber}></Button>
+          <Button title="Add contact" onPress={getPhoneNumber}></Button>
           <View>
-            <FlatList
-              data={number}
-              renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-            />
+          <Text style={styles.sectionTitle}>Number:{number}</Text>
           </View>
           <Text>{"\n"}</Text>
-          <Button title="Clear list" onPress={clearList}></Button>
+          <Button title="Clear contact" onPress={clearList}></Button>
         </View>
       </View>
     </View>
