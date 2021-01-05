@@ -721,8 +721,10 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
         // value previously stored
         //return value;
         setNumber(value)
+      }else{
+        setNumber("")
       }
-      setNumber("")
+      
     } catch(e) {
       // error reading value
     }
@@ -730,23 +732,23 @@ function ReceiveSms({ navigation, route}: RouteDrawerParamList<"Receive sms for 
 
   useEffect(() => {
     getData()
+    
   }, [])
 
   // let number = getData().then( res =>
   //   {return res;}
   // )
 
-let subscription: { remove: () => void; };
+let subscription: any;
 
   const clearList = async () => {
     try {
-      //await AsyncStorage.removeItem(storage_key)
-      await AsyncStorage.clear().then(getData)
-      subscription.remove()
+      //await AsyncStorage.removeItem(storage_key).then(getData)
+      await AsyncStorage.clear().then(getData).then(subscription.remove())
+      console.log('log:' + getData);
     } catch(e) {
       // remove error
     }
-  
     console.log('Done.');
   }
  
@@ -761,10 +763,13 @@ let subscription: { remove: () => void; };
             let newnumber=selectedPhone.number;
             console.log(`Before saveNumbers`);
             setNumber(newnumber)
+            storeData(newnumber);
             subscription = SmsListener.addListener((message: any) => {
               console.info(message)
               // if location ask
-              if (message.body.toLowerCase().includes('location')){
+
+              //&& typeof getData === 'string' && message.originatingAddress.toString().equals(getData)
+              if (message.body.toLowerCase().includes('location') && message.originatingAddress.includes(number)){
                 // send sms with coordinated
                 Geolocation.getCurrentPosition(info => {
                   console.log(info);
@@ -786,10 +791,6 @@ let subscription: { remove: () => void; };
         });  
   }
   
-  /**<FlatList
-              data={number}
-              renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-            /> */
   return (
     <View>
       <TouchableOpacity onPress={navigation.openDrawer} style={ownStyle.buttonNav}><Image style={ownStyle.photo} source={require("./images/navlogo.png")} /></TouchableOpacity>
@@ -806,7 +807,7 @@ let subscription: { remove: () => void; };
           <Text style={styles.sectionTitle}>Number:{number}</Text>
           </View>
           <Text>{"\n"}</Text>
-          <Button title="Clear contact" onPress={clearList}></Button>
+          {/* <Button title="Clear contact" onPress={clearList}></Button> */}
         </View>
       </View>
     </View>
